@@ -25,8 +25,8 @@ void setDutyCycle(float fraction) {
   OCR4A = (F_CPU / 25000 * 3 / 4) & 0xFF;
 }
 
-unsigned long tick;
-unsigned long ones;
+unsigned long tick = 0;
+unsigned long ones = 0;
 
 int main(void) {
   DDRD = 1 << 4;
