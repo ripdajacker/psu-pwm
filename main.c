@@ -20,13 +20,13 @@ void pwmBegin(void) {
   TCCR4B = (1 << CS40);
 }
 
-void setDutyCycle(unsigned long numerator, unsigned long denominator) {
+void setDutyCycle(uint16_t numerator, uint16_t denominator) {
   TC4H = (F_CPU / 25000 * numerator / denominator) >> 8;
   OCR4A = (F_CPU / 25000 * numerator / denominator) & 0xFF;
 }
 
-unsigned long tick = 0;
-unsigned long ones = 0;
+uint16_t tick = 0;
+uint16_t ones = 0;
 
 int main(void) {
   DDRD = 1 << 4;
