@@ -2,6 +2,8 @@
     "files.associations": {
         "io.h": "c",
         "ioat94k.h": "c",
-        "sfr_defs.h": "c"
+        "sfr_defs.h": "c",
+        "delay.h": "c",
+        "cpufunc.h": "c"
     }
 }

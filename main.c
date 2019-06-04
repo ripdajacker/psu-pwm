@@ -1,24 +1,54 @@
+# define F_CPU 16000000UL
+
 #ifndef __AVR_ATmega32U4__
 #define __AVR_ATmega32U4__ 1
 #endif
 
-#define setbit(port, bit) (port) |= (1 << (bit))
-#define clearbit(port, bit) (port) &= ~(1 << (bit))
-
-#include <avr/delay.h>
 #include <avr/io.h>
+#include <avr/power.h>
+#include <util/delay.h>
+
+void pwmBegin(void) {
+  clock_prescale_set(clock_div_1);
+
+  DDRC = 1 << 7;
+
+  TC4H = (F_CPU / 25000 - 1) >> 8;
+  OCR4C = (F_CPU / 25000 - 1) & 0xFF;
+
+  TCCR4A = (1 << COM4A1) | (1 << PWM4A);
+  TCCR4B = (1 << CS40);
+}
+
+void setDutyCycle(float fraction) {
+  TC4H = (F_CPU / 25000 * 3 / 4) >> 8;
+  OCR4A = (F_CPU / 25000 * 3 / 4) & 0xFF;
+}
+
+unsigned long tick;
+unsigned long ones;
 
 int main(void) {
-  DDRD = 0b00001000;
+  DDRD = 1 << 4;
+  DDRC = 1 << 7;
+
+  pwmBegin();
+  setDutyCycle(1 / 5);
 
   while (1) {
-    if (PIND & PIND4) {
-      setbit(PORTD, PD7);
-    } else {
-      clearbit(PORTD, PD7);
+    for (tick = 0; tick < 1000; ++tick) {
+      if (PIND & (1 << PD4)) {
+        ones++;
+      }
+
+      _delay_us(1);
     }
-    
-    _delay_us(1);
+
+    setDutyCycle(ones / (float)tick);
+
+    tick = 0;
+    ones = 0;
   }
+
   return 0;
 }
