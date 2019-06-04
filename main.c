@@ -1,4 +1,4 @@
-# define F_CPU 16000000UL
+#define F_CPU 16000000UL
 
 #ifndef __AVR_ATmega32U4__
 #define __AVR_ATmega32U4__ 1
@@ -20,9 +20,9 @@ void pwmBegin(void) {
   TCCR4B = (1 << CS40);
 }
 
-void setDutyCycle(float fraction) {
-  TC4H = (F_CPU / 25000 * 3 / 4) >> 8;
-  OCR4A = (F_CPU / 25000 * 3 / 4) & 0xFF;
+void setDutyCycle(unsigned long numerator, unsigned long denominator) {
+  TC4H = (F_CPU / 25000 * numerator / denominator) >> 8;
+  OCR4A = (F_CPU / 25000 * numerator / denominator) & 0xFF;
 }
 
 unsigned long tick = 0;
@@ -33,7 +33,7 @@ int main(void) {
   DDRC = 1 << 7;
 
   pwmBegin();
-  setDutyCycle(1 / 5);
+  setDutyCycle(1, 5);
 
   while (1) {
     for (tick = 0; tick < 1000; ++tick) {
@@ -44,7 +44,7 @@ int main(void) {
       _delay_us(1);
     }
 
-    setDutyCycle(ones / (float)tick);
+    setDutyCycle(ones, tick);
 
     tick = 0;
     ones = 0;
