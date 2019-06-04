@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "io.h": "c",
+        "ioat94k.h": "c",
+        "sfr_defs.h": "c"
+    }
+}
