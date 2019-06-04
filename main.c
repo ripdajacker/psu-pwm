@@ -29,8 +29,7 @@ uint16_t tick = 0;
 uint16_t ones = 0;
 
 int main(void) {
-  DDRD = 1 << 4;
-  DDRC = 1 << 7;
+  DDRD = 0;
 
   pwmBegin();
   setDutyCycle(1, 5);
