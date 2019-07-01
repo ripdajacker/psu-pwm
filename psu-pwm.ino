@@ -1,29 +1,31 @@
 
-void setup() {     
-  Serial.begin(9600);  
+void setup() {
+  Serial.begin(9600);
 
-  pinMode(5, OUTPUT);     
+  pinMode(5, OUTPUT);
   pinMode(A0, INPUT);
 
   // Start fan at 1/2 speed
   analogWrite(5, 128);
 }
 
+const uint16_t input_min = 300;
+const uint16_t input_max = 400;
+const uint16_t output_min = 55;
+const uint16_t output_max = 210;
 
 void loop() {
   // Read and map temperature to PWM signal
   uint16_t read = analogRead(A0);
-  uint8_t writeThis =  map(read, 300, 400, 55, 210);
+  uint8_t writeThis = map(read, input_min, input_max, output_min, output_max);
 
-  if(read < 100 ) {
-    // Something is wrong, the wire likely broke
-    writeThis = 210;
-  } 
- 
-  if(read < 300) {
-    writeThis = 55;    
-  } else if(read > 400) {
-    writeThis = 210;
+  if (read < 100) {
+    // Something is wrong, the wire likely broke, put the fan into high speed
+    writeThis = output_max;
+  } else if (read < input_min) {
+    writeThis = output_min;
+  } else if (read > input_max) {
+    writeThis = output_max;
   }
 
   // Output PWM signal
