@@ -11,7 +11,7 @@ A small Arduino program to PWM control a 1st edition Corsair HX850 PSU.
 
 ## Wiring
 
-You need to run a wire from the black pin on the thermistor inside the PSU to `A0` on the Arduino with a 10k resistor. Add a 5k resistor from `A0` to ground. This acts as a voltage divider and keeps your arduino from blowing up.
+You need to run a wire from the red pin on the thermistor inside the PSU to `A0` on the Arduino with a 10k resistor. Add a 5k resistor from `A0` to ground. This acts as a voltage divider and keeps your arduino from blowing up.
 
 Run another wire from pin `5` on the Arduino to the PWM pin of the fan you intend to use.
 
@@ -19,11 +19,13 @@ Run another wire from pin `5` on the Arduino to the PWM pin of the fan you inten
 -------                      -----------
 | PSU |                      | Arduino |
 -------                      -----------
-Black lead
+Red lead
 from 
 thermistor  ------------------->  A0
                                    5 ----------------> Blue pin on FAN
 ````
+
+![alt text](https://raw.githubusercontent.com/ripdajacker/psu-pwm/master/hx850.png)
 
 ## Programming and tuning
 
